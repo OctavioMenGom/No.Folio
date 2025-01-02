@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No. Folio</title>
+    <link rel="stylesheet" type="text/css" href="ISI.css">
+    <link rel="icon" href="images/Logo-ISI-simple.ico" type="image/x-icon">
+    <script src="script.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="form-buttons">
+            <button type="submit" name="Cargar">Cargar</button>
+            <button type="reset" class="reset" name="Limpiar" onclick="limpiarFormulario()">Limpiar</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-container"> 
+                <h1>No. Folio</h1> 
+                <h2 id="tipoCotizacionTitulo">Cotización</h2>
+
+            </div>
+
+            <div class="logo-container" id="logo-container">
+                <!-- Los logos se mostrarán aquí -->
+            </div>
+        </div>
+        <form name="google-sheet" autocomplete="off" method="post">
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <table>
+                    <tr>
+                        <td>Folio</td>
+                        <td>
+                            <div style="display: flex; align-items: center;" id="folio-section" class="hidden">
+                                <input type="text" id="folioInput" name="Folio" placeholder="Introduce el folio" required />
+                                <button type="button" id="folioButton" onclick="generateFolio()">Generar Folio</button>
+                            </div>
+                        </td>
+                        <td>Pre cotización</td>
+                        <td><input type="radio" id="preCotizacion" name="tipoCotizacion" value="pre-cotizacion" onclick="toggleSections()" required/></td>
+                        <td>Cotización</td>
+                        <td><input type="radio" id="cotizacion" name="tipoCotizacion" value="cotizacion" onclick="toggleSections()" required/></td>
+                        <td>Fecha</td>
+                    </tr>
+                    <tr>
+                        <td>Empresa</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <select id="empresa_options" name="empresa_options" class="dropdown" onchange="changeLogo()" required>
+                                    <option value="null">Selecciona empresa</option>
+                                    <option value="ISI">ISI</option>
+                                    <option value="CSM">CSM</option>  
+                                    <option value="MIC">MIC</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>Garantía</td> 
+                        <td><input type="text" id="garantia" name="Folio" placeholder="Introduce No. Garantía..."/></td>
+                        <td>Zona</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <select id="zona_options" name="zona_options" class="dropdown" required>
+                                    <option value="null">Selecciona zona...</option>
+                                    <option value="GDL">GDL</option> 
+                                    <option value="MEX">MEX</option> 
+                                    <option value="PUE">PUE</option> 
+                                    <option value="QRO">QRO</option> 
+                                    <option value="VER">VER</option> 
+                                </select>
+                            </div>
+                        </td>
+                        <td> 
+                            <input type="date"/> 
+                        </td> 
+                    </tr>
+                </table>
+            </div>
+
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <!-- Tabla de clientes -->
+                <div style="display: flex; gap: 20px;">
+                    <table border="1">
+                        <tr>
+                            <td>Atiende</td>
+                            <td>
+                                <select id="selectorHoja1">
+                                    <option value="" disabled selected>¿Quién atiende?</option>
+                                </select>
+                            </td> 
+                            <td></td>
+                            <td>Planta</td>
+                            <td>Revolvedora</td>
+                        </tr>
+                        <tr>
+                            <td>No. Cliente</td>
+                            <td>
+                                <select id="selectorHoja2">
+                                    <option value="" disabled selected>¿Quién es el cliente?</option>
+                                </select>
+                            </td> 
+                            <td>Servicio</td>
+                            <td><input type="checkbox"/></td>
+                            <td><input type="checkbox"/></td>
+                        </tr>
+                        <tr>
+                            <td>Cliente</td>
+                            <td>
+                                <select id="selectorHoja2">
+                                    <option value="" disabled selected>¿Quién es el cliente?</option>
+                                </select>
+                            </td> 
+                            <td>Mov/Trasl</td>
+                            <td><input type="checkbox"/></td>
+                            <td><input type="checkbox"/></td>
+                        </tr>
+                        <tr>
+                            <td>Solicita</td>
+                            <td colspan="4">
+                                <input type="text" id="nombreSolicita" name="nombreSolicita" placeholder="¿Quién solicita?...">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Tabla de gastos -->
+                <div id="gastos-section" class="hidden">
+                    <table border="1"> 
+                        <caption><b>Gastos</b></caption>
+                        <tr> 
+                            <td><b>Forma de Pago</b></td> 
+                            <td> 
+                                <select id="pago_options1" name="pago_options1" class="dropdown" style="margin-right: 10px;"> 
+                                    <option value="null">Opción de pago</option> 
+                                    <option value="tarjeta">Tarjeta</option> 
+                                    <option value="efectivo">Efectivo</option> 
+                                    <option value="transferencia">Transferencia</option> 
+                                </select> 
+                                <input type="text" id="ReferenciaDePago" name="ReferenciaDePago" placeholder="Referencia de Pago"> 
+                            </td> 
+                        </tr> 
+                        <tr> 
+                            <td><b>Fact / Ticket</b></td> 
+                            <td><input type="text" name="input2_row0" /></td> 
+                        </tr> 
+                        <tr> 
+                            <td><b>Monto</b></td> 
+                            <td><input type="text" id="monto" name="monto" readonly/></td> 
+                        </tr> 
+                    </table>
+                </div>
+            </div>
+
+            <div class="input-list">
+                <div class="input-container">
+                    <label for="falla">Falla reportada</label>
+                    <input type="text" id="falla" name="falla" placeholder="Describe la falla..." required>
+                </div>
+            </div>
+            <p></p>
+            <!-- Contenedor para la tabla dinámica -->
+            <div id="dynamicTableContainer" class="hidden" style="display: flex; gap: 20px; justify-content: center;">
+                <table id="dynamicTable"> 
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>UM</th>
+                        <th>Descripción</th>
+                        <th>P.U.</th>
+                        <th>Costo</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="cantidad" onchange="calcularCosto()"/></td>
+                        <td><input type="text" name="um" /></td> 
+                        <td><input type="text" name="descripcion" /></td>
+                        <td><input type="text" name="cu" onchange="calcularCosto()"/></td> 
+                        <td><input type="text" name="costo" readonly/></td> 
+                    </tr> 
+                </table>
+            </div>
+            
+            <!-- Botones -->
+            <div id="buttonContainer" class="hidden button-container">
+                <button class="add" type="button" onclick="addRow('dynamicTable')">+</button>
+                <button class="remove" type="button" onclick="removeRow('dynamicTable')">-</button>
+                <button class="add-table" type="button" onclick="addTable()">Agregar Tabla Complementaria</button>
+                <button class="remove-table" type="button" onclick="removeTable()">Quitar Tabla Complementaria</button>
+            </div>
+            <div id="tableContainer" class="hidden table-container">
+                <!-- Las tablas adicionales se agregarán aquí -->
+            </div>
+            
+            <!-- Tabla Final -->
+            <div id="finalTableContainer" class="hidden" style="display: flex; gap: 20px; justify-content: center;">
+                <table id="finalTable" class="table-full-width"> 
+                    <tr>
+                        <td>Subtotal</td>
+                        <td><input type="text" id="subtotal" name="subtotal" readonly/></td>
+                    </tr>
+                    <tr>
+                        <td>IVA</td>
+                        <td><input type="text" id="iva" name="iva" readonly/></td> 
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td><input type="text" id="total" name="total" readonly/></td> 
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
